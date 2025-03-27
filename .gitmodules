@@ -1,3 +1,6 @@
 [submodule "cobuild_back"]
 	path = cobuild_back
 	url = https://github.com/tahacmv/cobuild_back.git
+[submodule "cobuild_front"]
+	path = cobuild_front
+	url = https://github.com/bakarouhajar/cobuild_front.git
