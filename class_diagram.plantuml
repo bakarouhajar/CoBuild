@@ -1,0 +1,124 @@
+# Recreate the updated PlantUML class diagram for CoBuild after reset
+
+plantuml_cobuild_updated = """
+@startuml
+
+' === Gestion des utilisateurs ===
+class Utilisateur {
+  +id: Long
+  +nom: String
+  +email: String
+  +motDePasse: String
+  +role: String
+}
+
+class PorteurDeProjet {
+  +projets: List<Projet>
+}
+
+class Travailleur {
+  +competences: List<String>
+  +candidatures: List<Candidature>
+}
+
+class Fournisseur {
+  +materiels: List<Materiel>
+}
+
+class Administrateur {
+  +gererUtilisateurs(): void
+  +genererStatistiques(): Statistique
+}
+
+Utilisateur <|-- PorteurDeProjet
+Utilisateur <|-- Travailleur
+Utilisateur <|-- Fournisseur
+Utilisateur <|-- Administrateur
+
+' === Gestion des projets ===
+class Projet {
+  +id: Long
+  +nom: String
+  +description: String
+  +statut: String
+  +taches: List<Tache>
+}
+
+class Tache {
+  +id: Long
+  +nom: String
+  +description: String
+  +statut: String
+  +travailleur: Travailleur
+}
+
+PorteurDeProjet "1" -- "*" Projet
+Projet "1" -- "*" Tache
+Tache "1" -- "1" Travailleur
+
+' === Place de marché ===
+class Materiel {
+  +id: Long
+  +nom: String
+  +description: String
+  +quantiteDisponible: Integer
+}
+
+class DemandeMateriel {
+  +id: Long
+  +materiels: List<Materiel>
+  +fournisseur: Fournisseur
+  +projet: Projet
+  +statut: String
+}
+
+Fournisseur "1" -- "*" Materiel
+DemandeMateriel "1" -- "*" Materiel
+DemandeMateriel "1" -- "1" Fournisseur
+DemandeMateriel "1" -- "1" Projet
+
+' === Collaboration et Communication ===
+class Candidature {
+  +id: Long
+  +travailleur: Travailleur
+  +projet: Projet
+  +statut: String
+}
+
+class Message {
+  +id: Long
+  +expediteur: Utilisateur
+  +destinataire: Utilisateur
+  +contenu: String
+}
+
+Travailleur "1" -- "*" Candidature
+Projet "1" -- "*" Candidature
+Utilisateur "1" -- "*" Message
+
+' === Modération et Administration ===
+class Moderation {
+  +id: Long
+  +utilisateur: Utilisateur
+  +raison: String
+}
+
+class Statistique {
+  +id: Long
+  +type: String
+  +valeur: Double
+}
+
+Administrateur "1" -- "*" Moderation
+Administrateur "1" -- "*" Statistique
+
+@enduml
+"""
+
+# Save the updated PlantUML file
+plantuml_cobuild_updated_path = "/mnt/data/class_diagram_cobuild_updated.puml"
+with open(plantuml_cobuild_updated_path, "w") as file:
+    file.write(plantuml_cobuild_updated)
+
+# Return the path to the updated file
+plantuml_cobuild_updated_path
